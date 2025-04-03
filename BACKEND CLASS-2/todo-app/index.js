@@ -27,5 +27,5 @@ dbConnect();
 
 //default route
 app.get('/', (req, res) => {
-    res.send('<h1> THIS IS HOMEPAGE BABy</h1>');
+    res.send('<h1> THIS IS HOMEPAGE BABY</h1>');
 })
