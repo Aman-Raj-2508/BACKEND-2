@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
 
-
+//make Schema
 const likeSchema = new mongoose.Schema({
     post: {
         type: mongoose.Schema.Types.ObjectId, // for id of post
-        ref: "Post",// reference to the post model
+        ref: "Post",// Post schema se reference lekr id nikal lenge
     },
     user: {
         type: String,
@@ -12,5 +12,5 @@ const likeSchema = new mongoose.Schema({
     },
 });
 
-
+//export
 module.exports = mongoose.model("Like", likeSchema);

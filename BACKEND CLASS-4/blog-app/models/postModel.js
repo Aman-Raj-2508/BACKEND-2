@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-
+//make Schema
 const postSchema = new mongoose.Schema({
     title: {
         type: String,
@@ -12,16 +12,16 @@ const postSchema = new mongoose.Schema({
     },
     likes: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Like",
+        ref: "Like", //Like schema se reference lekr id nikal lenge
     }],
     comments: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Comment",
+        ref: "Comment",  //Comment schema se reference lekr id nikal lenge
     }]
 })
 
 
 
 
-
+//export
 module.exports = mongoose.model("Post", postSchema);

@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
 
-
+//make Schema
 const commentSchema = new mongoose.Schema({
     post: {
         type: mongoose.Schema.Types.ObjectId, // for id of post
-        ref: "Post",// reference to the post model
+        ref: "Post",//  Post schema se reference lekr id nikal lenge
     },
     user: {
         type: String,
@@ -16,5 +16,5 @@ const commentSchema = new mongoose.Schema({
     }
 });
 
-
-module.exports = mongoose.model("Comment", commentSchema); // Comment Schema kko comment naam se export kar diiya.
+//export
+module.exports = mongoose.model("Comment", commentSchema); // Comment Schema ko comment naam se export kar diya.
