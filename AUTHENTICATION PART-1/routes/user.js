@@ -6,7 +6,7 @@ const { login, signup } = require("../controllers/auth")
 
 
 //mapping
-// router.post("/login", login); //login route
+router.post("/login", login); //login route
 router.post("/signup", signup); //signup route
 
 //exporting the router
