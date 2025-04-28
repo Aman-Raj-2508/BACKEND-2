@@ -69,7 +69,7 @@ exports.login = async (req, res) => {
         }
 
         //if validation is successful, check if user exists in db
-        const user = await userModel.findOne({ email }); //findOne method is used to find the first document that matches the query. If no document is found, it returns null else it returns the document.
+        let user = await userModel.findOne({ email }); //findOne method is used to find the first document that matches the query. If no document is found, it returns null else it returns the document.
         //if user is not found, return error
         if (!user) {
             return res.status(404).json({
@@ -91,22 +91,22 @@ exports.login = async (req, res) => {
             //password is correct, generate token
             let token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "2h" }); //token ko sign kar rahe hai using jwt.sign method. 1st argument is payload, 2nd is secret key, 3rd is options.
 
+            user = user.toObject(); //user ko object me convert kar rahe hai taaki hum usme token daal sake.
             user.token = token; //token ko user object me daal rahe hai na ki database me save kar rahe hai.
-
-            //user object ko response me bhej rahe hai.
-            user.password = undefined; //password ko undefined kar rahe hai taaki password na dikhe response me.Hum databsee me undefined nhi kr rhe hai hm User object me kar rhe hn jo dinOne return kar raha hai.
+            user.password = undefined; //password ko undefined kar rahe hai taaki password na dikhe response me.Hum database me undefined nhi kr rhe hai hm User object me kar rhe hn jo dinOne return kar raha hai.
 
             //create cookie and send response
             const options = {
                 expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), //cookie ki expiry date set kar rahe hai. 3 din baad expire hogi cookie.
                 httpOnly: true, //cookie ko httpOnly banate hai taaki client side se access na ho sake.
             }
+
             res.cookie("token", token, options).status(200).json({
                 success: true,
                 message: "Login successful",
                 user, //user object ko bhej rahe hai response me. 
                 token, //token ko bhej rahe hai response me.
-            })
+            });
 
         } else {
             return res.status(403).json({
