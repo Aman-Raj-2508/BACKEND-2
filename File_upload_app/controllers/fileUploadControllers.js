@@ -44,11 +44,15 @@ function isFileTypeSupported(fileType, supportedTypes) {
 }
 
 // file upload to cloudinary
-async function uploadFileToCloudinary(file, folder, resourceType) {
+async function uploadFileToCloudinary(file, folder, resourceType = "auto", quality = "auto") {
     const options = {
         folder,
-        resource_type: resourceType || "auto", // fallback to auto-detect
+        resource_type: resourceType,
+        transformation: [
+            { quality: quality } // Use Cloudinary's transformation pipeline
+        ]
     };
+
     return await cloudinary.uploader.upload(file.tempFilePath, options);
 }
 
@@ -149,6 +153,71 @@ exports.videoUpload = async (req, res) => {
             videoUrl: response.secure_url,
             message: "Video Successfully uploaded",
         });
+
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({
+            success: false,
+            message: "Something went wrong",
+        });
+    }
+}
+
+//image reducer
+exports.imageSizeReducer = async (req, res) => {
+    try {
+
+        //fetch data
+        const { name, email, tags } = req.body;
+
+        const file = req.files.imageFile;
+
+        //validation
+        const supportedTypes = ["jpg", "jpeg", "png"];
+
+        //current file ka extension kya hai usko nikalo
+        const fileType = file.name.split(".")[1].toLowerCase();
+
+        //Add a limit for the file size
+        const maxSize = 1024 * 1024 * 10; // 10MB
+        //check if the file type is supported or not. For that make a function and call it.
+        if (!isFileTypeSupported(fileType, supportedTypes)) {
+            return res.status(400).json({
+                success: false,
+                message: "File type not supported",
+            });
+        }
+
+        //check if the file size is within the limit
+        if (file.size > maxSize) {
+            return res.status(400).json({
+                success: false,
+                message: "File size exceeds the limit",
+            });
+        }
+
+        //Agr file type supported hai to usko upload kar do.
+        const response = await uploadFileToCloudinary(file, "Aman", "image", 30);
+        console.log("Response -->", response);
+
+        //db me entry save krni hai.
+        const fileData = await File.create({
+            name,
+            tags,
+            email,
+            imageUrl: response.secure_url,
+
+        })
+
+        res.json({
+            success: true,
+            imageUrl: response.secure_url,
+            message: "Image Successfully uploaded",
+        });
+
+
+
 
     }
     catch (error) {
