@@ -13,8 +13,8 @@ exports.likePost = async (req, res) => {
 
         // console.log(savedLike._id); 
 
-        const updatedPost = await Post.findByIdAndUpdate(postId, { $push: { likes: savedLike._id } }, { new: true })//savedCommment._id karne se comment ka jo id bana hoga by default db me woh push ho jyega comment wale array me jo POST wale db me hai.updated Document chahiye isiliye new ko true kar diye.
-            .populate("likes") // populates the comments array of post with comment document.
+        const updatedPost = await Post.findByIdAndUpdate(postId, { $push: { likes: savedLike._id } }, { new: true })//savedLike._id karne se like ka jo id bana hoga by default db me woh push ho jyega like wale array me jo POST wale db me hai.updated Document chahiye isiliye new ko true kar diye.
+            .populate("likes") // populates the likes array of post with like document.
             .exec();
 
         res.status(200).json({

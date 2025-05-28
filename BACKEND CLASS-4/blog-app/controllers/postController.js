@@ -25,7 +25,8 @@ exports.createPost = async (req, res) => {
 
 exports.getAllPosts = async (req, res) => {
     try {
-        const posts = await Post.find().populate("comments").exec();
+        const posts = await Post.find().populate("comments").exec();//find all the posts and populate the comments field with the comment data.
+        //populate is used to get the data from the other collection and exec is used to execute the query.
         res.json({
             posts,
         })
