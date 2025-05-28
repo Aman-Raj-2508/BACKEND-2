@@ -27,7 +27,7 @@ fileSchema.post('save', async function (doc) {
 
         console.log("File saved successfully", doc);
         //Node mailer ka setup, first we need to create a transporter
-        const transporter = nodemailer.transporter({
+        const transporter = nodemailer.createTransport({
             host: process.env.MAIL_HOST,
             auth: {
                 user: process.env.MAIL_USER,
@@ -43,17 +43,14 @@ fileSchema.post('save', async function (doc) {
             text: `Your file ${doc.name} has been uploaded successfully.`
         });
 
+        console.log("Email sent successfully", info);
+
     }
     catch (error) {
 
         console.error("Error in sending email", error);
     }
 });
-
-
-
-
-
 
 const FileModel = mongoose.model('File', fileSchema);
 module.exports = FileModel;
