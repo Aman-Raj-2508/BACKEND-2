@@ -20,7 +20,7 @@ exports.createComment = async (req, res) => {
         // console.log(savedComment._id); 
 
         //Find the post By ID and add the new comment into the comment array
-        const updatedPost = await Post.findByIdAndUpdate(postId, { $push: { comments: savedComment._id } }, { new: true })//savedCommment._id karne se comment ka jo id bana hoga by default db me woh push ho jyega comment wale array me jo POST wale db me hai.
+        const updatedPost = await Post.findByIdAndUpdate(postId, { $push: { comments: savedComment._id } }, { new: true })//savedCommment._id karne se comment ka jo id bana hoga by default db me woh push ho jyega comment wale array me jo POST wale db me hai. new  ko true krne se update document return hoga.
             .populate("comments") // populates the comments array of post with comment document.
             .exec();
 
