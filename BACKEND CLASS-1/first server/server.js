@@ -25,7 +25,7 @@ app.post('/api/cars', (req, res) => {
 })
 
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/mydatabse', {
+mongoose.connect('mongodb://localhost:27017/myfirstdatabse', {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
